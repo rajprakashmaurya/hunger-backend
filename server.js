@@ -7,6 +7,7 @@ const bodyParser = require("body-parser");
 
 app.use(cors());
 app.use(bodyParser.json());
+
 app.use("/", router);
 
 const connectDb = async (req, res) => {
