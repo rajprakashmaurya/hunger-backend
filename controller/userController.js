@@ -11,7 +11,7 @@ exports.getAllUser = async (req, res) => {
     });
   } catch (error) {
     return res.status(400).json({
-      error: error,
+      error: true,
       message: error.message || error,
     });
   }
@@ -19,13 +19,23 @@ exports.getAllUser = async (req, res) => {
 
 exports.postdata = async (req, res) => {
   try {
+    const isuser = await User.findOne({ email: req.body.email });
+
+    if (isuser)
+      return res.status(400).json({
+        error: true,
+        message: "User already exists with this email",
+      });
+
     const user = await User.create(req.body);
-    return res.status(200).json({
+    console.log(user);
+    return res.status(201).json({
       message: "user is created successfully",
+      data: user,
     });
   } catch (error) {
-    return res.status(400).json({
-      error: error,
+    return res.status(500).json({
+      error: true,
       message: error.message || error,
     });
   }
